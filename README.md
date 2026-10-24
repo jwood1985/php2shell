@@ -12,8 +12,8 @@ Full analysis: https://dynatr.ac/4ePj7ZN
 
 | File | Environment |
 |------|-------------|
-| `php2shell-saas.json` | Dynatrace SaaS |
-| `php2shell-managed.json` | Dynatrace Managed |
+| `PHP2Shell Exposure Assessment - SaaS.json` | Dynatrace SaaS |
+| `PHP2Shell Exposure Assessment - Managed.json` | Dynatrace Managed |
 
 > Update the filenames above to match the dashboards in this repo.
 
