@@ -1,0 +1,792 @@
+{
+  "metadata": {
+    "configurationVersions": [
+      7
+    ],
+    "clusterVersion": "1.348.76.20261019-170708"
+  },
+  "id": "468a6aa2-4334-4ac6-8917-567d92721d98",
+  "dashboardMetadata": {
+    "name": "PHP2Shell exposure (CVE-2026-109618 / CVE-2026-109619)",
+    "shared": true,
+    "owner": "josh.wood@dynatrace.com",
+    "dashboardFilter": {
+      "timeframe": "-2h"
+    },
+    "tags": [
+      "security",
+      "php2shell"
+    ],
+    "dynamicFilters": {
+      "filters": [
+        "CUSTOM_DIMENSION:dt.host_group.id",
+        "CUSTOM_DIMENSION:Host"
+      ],
+      "genericTagFilters": []
+    },
+    "hasConsistentColors": false
+  },
+  "tiles": [
+    {
+      "name": "PHP2Shell exposure  |  CVE-2026-109618 / CVE-2026-109619  |  live from OneAgent process technology data",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 1520,
+        "height": 38
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false
+    },
+    {
+      "name": "How to read this",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 38,
+        "left": 0,
+        "width": 1520,
+        "height": 114
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "markdown": "**Fix:** PHP 8.5.12 · 8.4.27 · 8.3.36 · 8.2.35. **7.4–8.1:** community source backports only. **Below 7.4:** no fix. Updating is the only complete mitigation.\n\nTiles are metric queries filtered by the PHP version OneAgent detected on each process (`softwareTechnologies.version`). **Vulnerable = All PHP − Patched.** mod_php (Apache with PHP loaded in-process) is the highest-risk deployment per PHP's advisory. Distro vendors may backport a fix without bumping the version: confirm with `rpm -q` / `dpkg -l` before closing a finding. A process upgraded on disk but not restarted still shows the old version, which is correct: it is still exposed."
+    },
+    {
+      "name": "All PHP processes",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 0,
+        "width": 380,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "All PHP processes",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "SINGLE_VALUE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "BLUE",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=Inf&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):splitBy():count):limit(100):names",
+        "resolution=null&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):splitBy():count)"
+      ]
+    },
+    {
+      "name": "Patched (fixed release or newer)",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 380,
+        "width": 380,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "Patched (fixed release or newer)",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.12~\",~\"PHP:8.5.13~\",~\"PHP:8.5.14~\",~\"PHP:8.5.15~\",~\"PHP:8.5.16~\",~\"PHP:8.5.17~\",~\"PHP:8.5.18~\",~\"PHP:8.5.19~\",~\"PHP:8.5.20~\",~\"PHP:8.5.21~\",~\"PHP:8.4.27~\",~\"PHP:8.4.28~\",~\"PHP:8.4.29~\",~\"PHP:8.4.30~\",~\"PHP:8.4.31~\",~\"PHP:8.4.32~\",~\"PHP:8.4.33~\",~\"PHP:8.4.34~\",~\"PHP:8.4.35~\",~\"PHP:8.4.36~\",~\"PHP:8.3.36~\",~\"PHP:8.3.37~\",~\"PHP:8.3.38~\",~\"PHP:8.3.39~\",~\"PHP:8.3.40~\",~\"PHP:8.3.41~\",~\"PHP:8.3.42~\",~\"PHP:8.3.43~\",~\"PHP:8.3.44~\",~\"PHP:8.3.45~\",~\"PHP:8.2.35~\",~\"PHP:8.2.36~\",~\"PHP:8.2.37~\",~\"PHP:8.2.38~\",~\"PHP:8.2.39~\",~\"PHP:8.2.40~\",~\"PHP:8.2.41~\",~\"PHP:8.2.42~\",~\"PHP:8.2.43~\",~\"PHP:8.2.44~\")\"))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "SINGLE_VALUE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "GREEN",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=Inf&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.12~\",~\"PHP:8.5.13~\",~\"PHP:8.5.14~\",~\"PHP:8.5.15~\",~\"PHP:8.5.16~\",~\"PHP:8.5.17~\",~\"PHP:8.5.18~\",~\"PHP:8.5.19~\",~\"PHP:8.5.20~\",~\"PHP:8.5.21~\",~\"PHP:8.4.27~\",~\"PHP:8.4.28~\",~\"PHP:8.4.29~\",~\"PHP:8.4.30~\",~\"PHP:8.4.31~\",~\"PHP:8.4.32~\",~\"PHP:8.4.33~\",~\"PHP:8.4.34~\",~\"PHP:8.4.35~\",~\"PHP:8.4.36~\",~\"PHP:8.3.36~\",~\"PHP:8.3.37~\",~\"PHP:8.3.38~\",~\"PHP:8.3.39~\",~\"PHP:8.3.40~\",~\"PHP:8.3.41~\",~\"PHP:8.3.42~\",~\"PHP:8.3.43~\",~\"PHP:8.3.44~\",~\"PHP:8.3.45~\",~\"PHP:8.2.35~\",~\"PHP:8.2.36~\",~\"PHP:8.2.37~\",~\"PHP:8.2.38~\",~\"PHP:8.2.39~\",~\"PHP:8.2.40~\",~\"PHP:8.2.41~\",~\"PHP:8.2.42~\",~\"PHP:8.2.43~\",~\"PHP:8.2.44~\")\"))):splitBy():count):limit(100):names",
+        "resolution=null&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.12~\",~\"PHP:8.5.13~\",~\"PHP:8.5.14~\",~\"PHP:8.5.15~\",~\"PHP:8.5.16~\",~\"PHP:8.5.17~\",~\"PHP:8.5.18~\",~\"PHP:8.5.19~\",~\"PHP:8.5.20~\",~\"PHP:8.5.21~\",~\"PHP:8.4.27~\",~\"PHP:8.4.28~\",~\"PHP:8.4.29~\",~\"PHP:8.4.30~\",~\"PHP:8.4.31~\",~\"PHP:8.4.32~\",~\"PHP:8.4.33~\",~\"PHP:8.4.34~\",~\"PHP:8.4.35~\",~\"PHP:8.4.36~\",~\"PHP:8.3.36~\",~\"PHP:8.3.37~\",~\"PHP:8.3.38~\",~\"PHP:8.3.39~\",~\"PHP:8.3.40~\",~\"PHP:8.3.41~\",~\"PHP:8.3.42~\",~\"PHP:8.3.43~\",~\"PHP:8.3.44~\",~\"PHP:8.3.45~\",~\"PHP:8.2.35~\",~\"PHP:8.2.36~\",~\"PHP:8.2.37~\",~\"PHP:8.2.38~\",~\"PHP:8.2.39~\",~\"PHP:8.2.40~\",~\"PHP:8.2.41~\",~\"PHP:8.2.42~\",~\"PHP:8.2.43~\",~\"PHP:8.2.44~\")\"))):splitBy():count)"
+      ]
+    },
+    {
+      "name": "Vulnerable, patch available (8.2–8.5)",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 760,
+        "width": 380,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "Vulnerable, patch available (8.2–8.5)",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.0~\",~\"PHP:8.5.1~\",~\"PHP:8.5.2~\",~\"PHP:8.5.3~\",~\"PHP:8.5.4~\",~\"PHP:8.5.5~\",~\"PHP:8.5.6~\",~\"PHP:8.5.7~\",~\"PHP:8.5.8~\",~\"PHP:8.5.9~\",~\"PHP:8.5.10~\",~\"PHP:8.5.11~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.4.0~\",~\"PHP:8.4.1~\",~\"PHP:8.4.2~\",~\"PHP:8.4.3~\",~\"PHP:8.4.4~\",~\"PHP:8.4.5~\",~\"PHP:8.4.6~\",~\"PHP:8.4.7~\",~\"PHP:8.4.8~\",~\"PHP:8.4.9~\",~\"PHP:8.4.10~\",~\"PHP:8.4.11~\",~\"PHP:8.4.12~\",~\"PHP:8.4.13~\",~\"PHP:8.4.14~\",~\"PHP:8.4.15~\",~\"PHP:8.4.16~\",~\"PHP:8.4.17~\",~\"PHP:8.4.18~\",~\"PHP:8.4.19~\",~\"PHP:8.4.20~\",~\"PHP:8.4.21~\",~\"PHP:8.4.22~\",~\"PHP:8.4.23~\",~\"PHP:8.4.24~\",~\"PHP:8.4.25~\",~\"PHP:8.4.26~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.3.0~\",~\"PHP:8.3.1~\",~\"PHP:8.3.2~\",~\"PHP:8.3.3~\",~\"PHP:8.3.4~\",~\"PHP:8.3.5~\",~\"PHP:8.3.6~\",~\"PHP:8.3.7~\",~\"PHP:8.3.8~\",~\"PHP:8.3.9~\",~\"PHP:8.3.10~\",~\"PHP:8.3.11~\",~\"PHP:8.3.12~\",~\"PHP:8.3.13~\",~\"PHP:8.3.14~\",~\"PHP:8.3.15~\",~\"PHP:8.3.16~\",~\"PHP:8.3.17~\",~\"PHP:8.3.18~\",~\"PHP:8.3.19~\",~\"PHP:8.3.20~\",~\"PHP:8.3.21~\",~\"PHP:8.3.22~\",~\"PHP:8.3.23~\",~\"PHP:8.3.24~\",~\"PHP:8.3.25~\",~\"PHP:8.3.26~\",~\"PHP:8.3.27~\",~\"PHP:8.3.28~\",~\"PHP:8.3.29~\",~\"PHP:8.3.30~\",~\"PHP:8.3.31~\",~\"PHP:8.3.32~\",~\"PHP:8.3.33~\",~\"PHP:8.3.34~\",~\"PHP:8.3.35~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.2.0~\",~\"PHP:8.2.1~\",~\"PHP:8.2.2~\",~\"PHP:8.2.3~\",~\"PHP:8.2.4~\",~\"PHP:8.2.5~\",~\"PHP:8.2.6~\",~\"PHP:8.2.7~\",~\"PHP:8.2.8~\",~\"PHP:8.2.9~\",~\"PHP:8.2.10~\",~\"PHP:8.2.11~\",~\"PHP:8.2.12~\",~\"PHP:8.2.13~\",~\"PHP:8.2.14~\",~\"PHP:8.2.15~\",~\"PHP:8.2.16~\",~\"PHP:8.2.17~\",~\"PHP:8.2.18~\",~\"PHP:8.2.19~\",~\"PHP:8.2.20~\",~\"PHP:8.2.21~\",~\"PHP:8.2.22~\",~\"PHP:8.2.23~\",~\"PHP:8.2.24~\",~\"PHP:8.2.25~\",~\"PHP:8.2.26~\",~\"PHP:8.2.27~\",~\"PHP:8.2.28~\",~\"PHP:8.2.29~\",~\"PHP:8.2.30~\",~\"PHP:8.2.31~\",~\"PHP:8.2.32~\",~\"PHP:8.2.33~\",~\"PHP:8.2.34~\")\")))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "SINGLE_VALUE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "RED",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=Inf&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.0~\",~\"PHP:8.5.1~\",~\"PHP:8.5.2~\",~\"PHP:8.5.3~\",~\"PHP:8.5.4~\",~\"PHP:8.5.5~\",~\"PHP:8.5.6~\",~\"PHP:8.5.7~\",~\"PHP:8.5.8~\",~\"PHP:8.5.9~\",~\"PHP:8.5.10~\",~\"PHP:8.5.11~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.4.0~\",~\"PHP:8.4.1~\",~\"PHP:8.4.2~\",~\"PHP:8.4.3~\",~\"PHP:8.4.4~\",~\"PHP:8.4.5~\",~\"PHP:8.4.6~\",~\"PHP:8.4.7~\",~\"PHP:8.4.8~\",~\"PHP:8.4.9~\",~\"PHP:8.4.10~\",~\"PHP:8.4.11~\",~\"PHP:8.4.12~\",~\"PHP:8.4.13~\",~\"PHP:8.4.14~\",~\"PHP:8.4.15~\",~\"PHP:8.4.16~\",~\"PHP:8.4.17~\",~\"PHP:8.4.18~\",~\"PHP:8.4.19~\",~\"PHP:8.4.20~\",~\"PHP:8.4.21~\",~\"PHP:8.4.22~\",~\"PHP:8.4.23~\",~\"PHP:8.4.24~\",~\"PHP:8.4.25~\",~\"PHP:8.4.26~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.3.0~\",~\"PHP:8.3.1~\",~\"PHP:8.3.2~\",~\"PHP:8.3.3~\",~\"PHP:8.3.4~\",~\"PHP:8.3.5~\",~\"PHP:8.3.6~\",~\"PHP:8.3.7~\",~\"PHP:8.3.8~\",~\"PHP:8.3.9~\",~\"PHP:8.3.10~\",~\"PHP:8.3.11~\",~\"PHP:8.3.12~\",~\"PHP:8.3.13~\",~\"PHP:8.3.14~\",~\"PHP:8.3.15~\",~\"PHP:8.3.16~\",~\"PHP:8.3.17~\",~\"PHP:8.3.18~\",~\"PHP:8.3.19~\",~\"PHP:8.3.20~\",~\"PHP:8.3.21~\",~\"PHP:8.3.22~\",~\"PHP:8.3.23~\",~\"PHP:8.3.24~\",~\"PHP:8.3.25~\",~\"PHP:8.3.26~\",~\"PHP:8.3.27~\",~\"PHP:8.3.28~\",~\"PHP:8.3.29~\",~\"PHP:8.3.30~\",~\"PHP:8.3.31~\",~\"PHP:8.3.32~\",~\"PHP:8.3.33~\",~\"PHP:8.3.34~\",~\"PHP:8.3.35~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.2.0~\",~\"PHP:8.2.1~\",~\"PHP:8.2.2~\",~\"PHP:8.2.3~\",~\"PHP:8.2.4~\",~\"PHP:8.2.5~\",~\"PHP:8.2.6~\",~\"PHP:8.2.7~\",~\"PHP:8.2.8~\",~\"PHP:8.2.9~\",~\"PHP:8.2.10~\",~\"PHP:8.2.11~\",~\"PHP:8.2.12~\",~\"PHP:8.2.13~\",~\"PHP:8.2.14~\",~\"PHP:8.2.15~\",~\"PHP:8.2.16~\",~\"PHP:8.2.17~\",~\"PHP:8.2.18~\",~\"PHP:8.2.19~\",~\"PHP:8.2.20~\",~\"PHP:8.2.21~\",~\"PHP:8.2.22~\",~\"PHP:8.2.23~\",~\"PHP:8.2.24~\",~\"PHP:8.2.25~\",~\"PHP:8.2.26~\",~\"PHP:8.2.27~\",~\"PHP:8.2.28~\",~\"PHP:8.2.29~\",~\"PHP:8.2.30~\",~\"PHP:8.2.31~\",~\"PHP:8.2.32~\",~\"PHP:8.2.33~\",~\"PHP:8.2.34~\")\")))):splitBy():count):limit(100):names",
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.0~\",~\"PHP:8.5.1~\",~\"PHP:8.5.2~\",~\"PHP:8.5.3~\",~\"PHP:8.5.4~\",~\"PHP:8.5.5~\",~\"PHP:8.5.6~\",~\"PHP:8.5.7~\",~\"PHP:8.5.8~\",~\"PHP:8.5.9~\",~\"PHP:8.5.10~\",~\"PHP:8.5.11~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.4.0~\",~\"PHP:8.4.1~\",~\"PHP:8.4.2~\",~\"PHP:8.4.3~\",~\"PHP:8.4.4~\",~\"PHP:8.4.5~\",~\"PHP:8.4.6~\",~\"PHP:8.4.7~\",~\"PHP:8.4.8~\",~\"PHP:8.4.9~\",~\"PHP:8.4.10~\",~\"PHP:8.4.11~\",~\"PHP:8.4.12~\",~\"PHP:8.4.13~\",~\"PHP:8.4.14~\",~\"PHP:8.4.15~\",~\"PHP:8.4.16~\",~\"PHP:8.4.17~\",~\"PHP:8.4.18~\",~\"PHP:8.4.19~\",~\"PHP:8.4.20~\",~\"PHP:8.4.21~\",~\"PHP:8.4.22~\",~\"PHP:8.4.23~\",~\"PHP:8.4.24~\",~\"PHP:8.4.25~\",~\"PHP:8.4.26~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.3.0~\",~\"PHP:8.3.1~\",~\"PHP:8.3.2~\",~\"PHP:8.3.3~\",~\"PHP:8.3.4~\",~\"PHP:8.3.5~\",~\"PHP:8.3.6~\",~\"PHP:8.3.7~\",~\"PHP:8.3.8~\",~\"PHP:8.3.9~\",~\"PHP:8.3.10~\",~\"PHP:8.3.11~\",~\"PHP:8.3.12~\",~\"PHP:8.3.13~\",~\"PHP:8.3.14~\",~\"PHP:8.3.15~\",~\"PHP:8.3.16~\",~\"PHP:8.3.17~\",~\"PHP:8.3.18~\",~\"PHP:8.3.19~\",~\"PHP:8.3.20~\",~\"PHP:8.3.21~\",~\"PHP:8.3.22~\",~\"PHP:8.3.23~\",~\"PHP:8.3.24~\",~\"PHP:8.3.25~\",~\"PHP:8.3.26~\",~\"PHP:8.3.27~\",~\"PHP:8.3.28~\",~\"PHP:8.3.29~\",~\"PHP:8.3.30~\",~\"PHP:8.3.31~\",~\"PHP:8.3.32~\",~\"PHP:8.3.33~\",~\"PHP:8.3.34~\",~\"PHP:8.3.35~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.2.0~\",~\"PHP:8.2.1~\",~\"PHP:8.2.2~\",~\"PHP:8.2.3~\",~\"PHP:8.2.4~\",~\"PHP:8.2.5~\",~\"PHP:8.2.6~\",~\"PHP:8.2.7~\",~\"PHP:8.2.8~\",~\"PHP:8.2.9~\",~\"PHP:8.2.10~\",~\"PHP:8.2.11~\",~\"PHP:8.2.12~\",~\"PHP:8.2.13~\",~\"PHP:8.2.14~\",~\"PHP:8.2.15~\",~\"PHP:8.2.16~\",~\"PHP:8.2.17~\",~\"PHP:8.2.18~\",~\"PHP:8.2.19~\",~\"PHP:8.2.20~\",~\"PHP:8.2.21~\",~\"PHP:8.2.22~\",~\"PHP:8.2.23~\",~\"PHP:8.2.24~\",~\"PHP:8.2.25~\",~\"PHP:8.2.26~\",~\"PHP:8.2.27~\",~\"PHP:8.2.28~\",~\"PHP:8.2.29~\",~\"PHP:8.2.30~\",~\"PHP:8.2.31~\",~\"PHP:8.2.32~\",~\"PHP:8.2.33~\",~\"PHP:8.2.34~\")\")))):splitBy():count)"
+      ]
+    },
+    {
+      "name": "EOL 8.0 / 8.1 (backport only)",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 1140,
+        "width": 380,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "EOL 8.0 / 8.1 (backport only)",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.1.0~\",~\"PHP:8.1.1~\",~\"PHP:8.1.2~\",~\"PHP:8.1.3~\",~\"PHP:8.1.4~\",~\"PHP:8.1.5~\",~\"PHP:8.1.6~\",~\"PHP:8.1.7~\",~\"PHP:8.1.8~\",~\"PHP:8.1.9~\",~\"PHP:8.1.10~\",~\"PHP:8.1.11~\",~\"PHP:8.1.12~\",~\"PHP:8.1.13~\",~\"PHP:8.1.14~\",~\"PHP:8.1.15~\",~\"PHP:8.1.16~\",~\"PHP:8.1.17~\",~\"PHP:8.1.18~\",~\"PHP:8.1.19~\",~\"PHP:8.1.20~\",~\"PHP:8.1.21~\",~\"PHP:8.1.22~\",~\"PHP:8.1.23~\",~\"PHP:8.1.24~\",~\"PHP:8.1.25~\",~\"PHP:8.1.26~\",~\"PHP:8.1.27~\",~\"PHP:8.1.28~\",~\"PHP:8.1.29~\",~\"PHP:8.1.30~\",~\"PHP:8.1.31~\",~\"PHP:8.1.32~\",~\"PHP:8.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.0.0~\",~\"PHP:8.0.1~\",~\"PHP:8.0.2~\",~\"PHP:8.0.3~\",~\"PHP:8.0.4~\",~\"PHP:8.0.5~\",~\"PHP:8.0.6~\",~\"PHP:8.0.7~\",~\"PHP:8.0.8~\",~\"PHP:8.0.9~\",~\"PHP:8.0.10~\",~\"PHP:8.0.11~\",~\"PHP:8.0.12~\",~\"PHP:8.0.13~\",~\"PHP:8.0.14~\",~\"PHP:8.0.15~\",~\"PHP:8.0.16~\",~\"PHP:8.0.17~\",~\"PHP:8.0.18~\",~\"PHP:8.0.19~\",~\"PHP:8.0.20~\",~\"PHP:8.0.21~\",~\"PHP:8.0.22~\",~\"PHP:8.0.23~\",~\"PHP:8.0.24~\",~\"PHP:8.0.25~\",~\"PHP:8.0.26~\",~\"PHP:8.0.27~\",~\"PHP:8.0.28~\",~\"PHP:8.0.29~\",~\"PHP:8.0.30~\")\")))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "SINGLE_VALUE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "ORANGE",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=Inf&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.1.0~\",~\"PHP:8.1.1~\",~\"PHP:8.1.2~\",~\"PHP:8.1.3~\",~\"PHP:8.1.4~\",~\"PHP:8.1.5~\",~\"PHP:8.1.6~\",~\"PHP:8.1.7~\",~\"PHP:8.1.8~\",~\"PHP:8.1.9~\",~\"PHP:8.1.10~\",~\"PHP:8.1.11~\",~\"PHP:8.1.12~\",~\"PHP:8.1.13~\",~\"PHP:8.1.14~\",~\"PHP:8.1.15~\",~\"PHP:8.1.16~\",~\"PHP:8.1.17~\",~\"PHP:8.1.18~\",~\"PHP:8.1.19~\",~\"PHP:8.1.20~\",~\"PHP:8.1.21~\",~\"PHP:8.1.22~\",~\"PHP:8.1.23~\",~\"PHP:8.1.24~\",~\"PHP:8.1.25~\",~\"PHP:8.1.26~\",~\"PHP:8.1.27~\",~\"PHP:8.1.28~\",~\"PHP:8.1.29~\",~\"PHP:8.1.30~\",~\"PHP:8.1.31~\",~\"PHP:8.1.32~\",~\"PHP:8.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.0.0~\",~\"PHP:8.0.1~\",~\"PHP:8.0.2~\",~\"PHP:8.0.3~\",~\"PHP:8.0.4~\",~\"PHP:8.0.5~\",~\"PHP:8.0.6~\",~\"PHP:8.0.7~\",~\"PHP:8.0.8~\",~\"PHP:8.0.9~\",~\"PHP:8.0.10~\",~\"PHP:8.0.11~\",~\"PHP:8.0.12~\",~\"PHP:8.0.13~\",~\"PHP:8.0.14~\",~\"PHP:8.0.15~\",~\"PHP:8.0.16~\",~\"PHP:8.0.17~\",~\"PHP:8.0.18~\",~\"PHP:8.0.19~\",~\"PHP:8.0.20~\",~\"PHP:8.0.21~\",~\"PHP:8.0.22~\",~\"PHP:8.0.23~\",~\"PHP:8.0.24~\",~\"PHP:8.0.25~\",~\"PHP:8.0.26~\",~\"PHP:8.0.27~\",~\"PHP:8.0.28~\",~\"PHP:8.0.29~\",~\"PHP:8.0.30~\")\")))):splitBy():count):limit(100):names",
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.1.0~\",~\"PHP:8.1.1~\",~\"PHP:8.1.2~\",~\"PHP:8.1.3~\",~\"PHP:8.1.4~\",~\"PHP:8.1.5~\",~\"PHP:8.1.6~\",~\"PHP:8.1.7~\",~\"PHP:8.1.8~\",~\"PHP:8.1.9~\",~\"PHP:8.1.10~\",~\"PHP:8.1.11~\",~\"PHP:8.1.12~\",~\"PHP:8.1.13~\",~\"PHP:8.1.14~\",~\"PHP:8.1.15~\",~\"PHP:8.1.16~\",~\"PHP:8.1.17~\",~\"PHP:8.1.18~\",~\"PHP:8.1.19~\",~\"PHP:8.1.20~\",~\"PHP:8.1.21~\",~\"PHP:8.1.22~\",~\"PHP:8.1.23~\",~\"PHP:8.1.24~\",~\"PHP:8.1.25~\",~\"PHP:8.1.26~\",~\"PHP:8.1.27~\",~\"PHP:8.1.28~\",~\"PHP:8.1.29~\",~\"PHP:8.1.30~\",~\"PHP:8.1.31~\",~\"PHP:8.1.32~\",~\"PHP:8.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.0.0~\",~\"PHP:8.0.1~\",~\"PHP:8.0.2~\",~\"PHP:8.0.3~\",~\"PHP:8.0.4~\",~\"PHP:8.0.5~\",~\"PHP:8.0.6~\",~\"PHP:8.0.7~\",~\"PHP:8.0.8~\",~\"PHP:8.0.9~\",~\"PHP:8.0.10~\",~\"PHP:8.0.11~\",~\"PHP:8.0.12~\",~\"PHP:8.0.13~\",~\"PHP:8.0.14~\",~\"PHP:8.0.15~\",~\"PHP:8.0.16~\",~\"PHP:8.0.17~\",~\"PHP:8.0.18~\",~\"PHP:8.0.19~\",~\"PHP:8.0.20~\",~\"PHP:8.0.21~\",~\"PHP:8.0.22~\",~\"PHP:8.0.23~\",~\"PHP:8.0.24~\",~\"PHP:8.0.25~\",~\"PHP:8.0.26~\",~\"PHP:8.0.27~\",~\"PHP:8.0.28~\",~\"PHP:8.0.29~\",~\"PHP:8.0.30~\")\")))):splitBy():count)"
+      ]
+    },
+    {
+      "name": "EOL 7.x / 5.x (no fix)",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 1140,
+        "width": 380,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "EOL 7.x / 5.x (no fix)",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.4.0~\",~\"PHP:7.4.1~\",~\"PHP:7.4.2~\",~\"PHP:7.4.3~\",~\"PHP:7.4.4~\",~\"PHP:7.4.5~\",~\"PHP:7.4.6~\",~\"PHP:7.4.7~\",~\"PHP:7.4.8~\",~\"PHP:7.4.9~\",~\"PHP:7.4.10~\",~\"PHP:7.4.11~\",~\"PHP:7.4.12~\",~\"PHP:7.4.13~\",~\"PHP:7.4.14~\",~\"PHP:7.4.15~\",~\"PHP:7.4.16~\",~\"PHP:7.4.17~\",~\"PHP:7.4.18~\",~\"PHP:7.4.19~\",~\"PHP:7.4.20~\",~\"PHP:7.4.21~\",~\"PHP:7.4.22~\",~\"PHP:7.4.23~\",~\"PHP:7.4.24~\",~\"PHP:7.4.25~\",~\"PHP:7.4.26~\",~\"PHP:7.4.27~\",~\"PHP:7.4.28~\",~\"PHP:7.4.29~\",~\"PHP:7.4.30~\",~\"PHP:7.4.31~\",~\"PHP:7.4.32~\",~\"PHP:7.4.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.3.0~\",~\"PHP:7.3.1~\",~\"PHP:7.3.2~\",~\"PHP:7.3.3~\",~\"PHP:7.3.4~\",~\"PHP:7.3.5~\",~\"PHP:7.3.6~\",~\"PHP:7.3.7~\",~\"PHP:7.3.8~\",~\"PHP:7.3.9~\",~\"PHP:7.3.10~\",~\"PHP:7.3.11~\",~\"PHP:7.3.12~\",~\"PHP:7.3.13~\",~\"PHP:7.3.14~\",~\"PHP:7.3.15~\",~\"PHP:7.3.16~\",~\"PHP:7.3.17~\",~\"PHP:7.3.18~\",~\"PHP:7.3.19~\",~\"PHP:7.3.20~\",~\"PHP:7.3.21~\",~\"PHP:7.3.22~\",~\"PHP:7.3.23~\",~\"PHP:7.3.24~\",~\"PHP:7.3.25~\",~\"PHP:7.3.26~\",~\"PHP:7.3.27~\",~\"PHP:7.3.28~\",~\"PHP:7.3.29~\",~\"PHP:7.3.30~\",~\"PHP:7.3.31~\",~\"PHP:7.3.32~\",~\"PHP:7.3.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.2.0~\",~\"PHP:7.2.1~\",~\"PHP:7.2.2~\",~\"PHP:7.2.3~\",~\"PHP:7.2.4~\",~\"PHP:7.2.5~\",~\"PHP:7.2.6~\",~\"PHP:7.2.7~\",~\"PHP:7.2.8~\",~\"PHP:7.2.9~\",~\"PHP:7.2.10~\",~\"PHP:7.2.11~\",~\"PHP:7.2.12~\",~\"PHP:7.2.13~\",~\"PHP:7.2.14~\",~\"PHP:7.2.15~\",~\"PHP:7.2.16~\",~\"PHP:7.2.17~\",~\"PHP:7.2.18~\",~\"PHP:7.2.19~\",~\"PHP:7.2.20~\",~\"PHP:7.2.21~\",~\"PHP:7.2.22~\",~\"PHP:7.2.23~\",~\"PHP:7.2.24~\",~\"PHP:7.2.25~\",~\"PHP:7.2.26~\",~\"PHP:7.2.27~\",~\"PHP:7.2.28~\",~\"PHP:7.2.29~\",~\"PHP:7.2.30~\",~\"PHP:7.2.31~\",~\"PHP:7.2.32~\",~\"PHP:7.2.33~\",~\"PHP:7.2.34~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.1.0~\",~\"PHP:7.1.1~\",~\"PHP:7.1.2~\",~\"PHP:7.1.3~\",~\"PHP:7.1.4~\",~\"PHP:7.1.5~\",~\"PHP:7.1.6~\",~\"PHP:7.1.7~\",~\"PHP:7.1.8~\",~\"PHP:7.1.9~\",~\"PHP:7.1.10~\",~\"PHP:7.1.11~\",~\"PHP:7.1.12~\",~\"PHP:7.1.13~\",~\"PHP:7.1.14~\",~\"PHP:7.1.15~\",~\"PHP:7.1.16~\",~\"PHP:7.1.17~\",~\"PHP:7.1.18~\",~\"PHP:7.1.19~\",~\"PHP:7.1.20~\",~\"PHP:7.1.21~\",~\"PHP:7.1.22~\",~\"PHP:7.1.23~\",~\"PHP:7.1.24~\",~\"PHP:7.1.25~\",~\"PHP:7.1.26~\",~\"PHP:7.1.27~\",~\"PHP:7.1.28~\",~\"PHP:7.1.29~\",~\"PHP:7.1.30~\",~\"PHP:7.1.31~\",~\"PHP:7.1.32~\",~\"PHP:7.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.0.0~\",~\"PHP:7.0.1~\",~\"PHP:7.0.2~\",~\"PHP:7.0.3~\",~\"PHP:7.0.4~\",~\"PHP:7.0.5~\",~\"PHP:7.0.6~\",~\"PHP:7.0.7~\",~\"PHP:7.0.8~\",~\"PHP:7.0.9~\",~\"PHP:7.0.10~\",~\"PHP:7.0.11~\",~\"PHP:7.0.12~\",~\"PHP:7.0.13~\",~\"PHP:7.0.14~\",~\"PHP:7.0.15~\",~\"PHP:7.0.16~\",~\"PHP:7.0.17~\",~\"PHP:7.0.18~\",~\"PHP:7.0.19~\",~\"PHP:7.0.20~\",~\"PHP:7.0.21~\",~\"PHP:7.0.22~\",~\"PHP:7.0.23~\",~\"PHP:7.0.24~\",~\"PHP:7.0.25~\",~\"PHP:7.0.26~\",~\"PHP:7.0.27~\",~\"PHP:7.0.28~\",~\"PHP:7.0.29~\",~\"PHP:7.0.30~\",~\"PHP:7.0.31~\",~\"PHP:7.0.32~\",~\"PHP:7.0.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.6.0~\",~\"PHP:5.6.1~\",~\"PHP:5.6.2~\",~\"PHP:5.6.3~\",~\"PHP:5.6.4~\",~\"PHP:5.6.5~\",~\"PHP:5.6.6~\",~\"PHP:5.6.7~\",~\"PHP:5.6.8~\",~\"PHP:5.6.9~\",~\"PHP:5.6.10~\",~\"PHP:5.6.11~\",~\"PHP:5.6.12~\",~\"PHP:5.6.13~\",~\"PHP:5.6.14~\",~\"PHP:5.6.15~\",~\"PHP:5.6.16~\",~\"PHP:5.6.17~\",~\"PHP:5.6.18~\",~\"PHP:5.6.19~\",~\"PHP:5.6.20~\",~\"PHP:5.6.21~\",~\"PHP:5.6.22~\",~\"PHP:5.6.23~\",~\"PHP:5.6.24~\",~\"PHP:5.6.25~\",~\"PHP:5.6.26~\",~\"PHP:5.6.27~\",~\"PHP:5.6.28~\",~\"PHP:5.6.29~\",~\"PHP:5.6.30~\",~\"PHP:5.6.31~\",~\"PHP:5.6.32~\",~\"PHP:5.6.33~\",~\"PHP:5.6.34~\",~\"PHP:5.6.35~\",~\"PHP:5.6.36~\",~\"PHP:5.6.37~\",~\"PHP:5.6.38~\",~\"PHP:5.6.39~\",~\"PHP:5.6.40~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.5.0~\",~\"PHP:5.5.1~\",~\"PHP:5.5.2~\",~\"PHP:5.5.3~\",~\"PHP:5.5.4~\",~\"PHP:5.5.5~\",~\"PHP:5.5.6~\",~\"PHP:5.5.7~\",~\"PHP:5.5.8~\",~\"PHP:5.5.9~\",~\"PHP:5.5.10~\",~\"PHP:5.5.11~\",~\"PHP:5.5.12~\",~\"PHP:5.5.13~\",~\"PHP:5.5.14~\",~\"PHP:5.5.15~\",~\"PHP:5.5.16~\",~\"PHP:5.5.17~\",~\"PHP:5.5.18~\",~\"PHP:5.5.19~\",~\"PHP:5.5.20~\",~\"PHP:5.5.21~\",~\"PHP:5.5.22~\",~\"PHP:5.5.23~\",~\"PHP:5.5.24~\",~\"PHP:5.5.25~\",~\"PHP:5.5.26~\",~\"PHP:5.5.27~\",~\"PHP:5.5.28~\",~\"PHP:5.5.29~\",~\"PHP:5.5.30~\",~\"PHP:5.5.31~\",~\"PHP:5.5.32~\",~\"PHP:5.5.33~\",~\"PHP:5.5.34~\",~\"PHP:5.5.35~\",~\"PHP:5.5.36~\",~\"PHP:5.5.37~\",~\"PHP:5.5.38~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.4.0~\",~\"PHP:5.4.1~\",~\"PHP:5.4.2~\",~\"PHP:5.4.3~\",~\"PHP:5.4.4~\",~\"PHP:5.4.5~\",~\"PHP:5.4.6~\",~\"PHP:5.4.7~\",~\"PHP:5.4.8~\",~\"PHP:5.4.9~\",~\"PHP:5.4.10~\",~\"PHP:5.4.11~\",~\"PHP:5.4.12~\",~\"PHP:5.4.13~\",~\"PHP:5.4.14~\",~\"PHP:5.4.15~\",~\"PHP:5.4.16~\",~\"PHP:5.4.17~\",~\"PHP:5.4.18~\",~\"PHP:5.4.19~\",~\"PHP:5.4.20~\",~\"PHP:5.4.21~\",~\"PHP:5.4.22~\",~\"PHP:5.4.23~\",~\"PHP:5.4.24~\",~\"PHP:5.4.25~\",~\"PHP:5.4.26~\",~\"PHP:5.4.27~\",~\"PHP:5.4.28~\",~\"PHP:5.4.29~\",~\"PHP:5.4.30~\",~\"PHP:5.4.31~\",~\"PHP:5.4.32~\",~\"PHP:5.4.33~\",~\"PHP:5.4.34~\",~\"PHP:5.4.35~\",~\"PHP:5.4.36~\",~\"PHP:5.4.37~\",~\"PHP:5.4.38~\",~\"PHP:5.4.39~\",~\"PHP:5.4.40~\",~\"PHP:5.4.41~\",~\"PHP:5.4.42~\",~\"PHP:5.4.43~\",~\"PHP:5.4.44~\",~\"PHP:5.4.45~\")\")))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "SINGLE_VALUE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "RED",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=Inf&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.4.0~\",~\"PHP:7.4.1~\",~\"PHP:7.4.2~\",~\"PHP:7.4.3~\",~\"PHP:7.4.4~\",~\"PHP:7.4.5~\",~\"PHP:7.4.6~\",~\"PHP:7.4.7~\",~\"PHP:7.4.8~\",~\"PHP:7.4.9~\",~\"PHP:7.4.10~\",~\"PHP:7.4.11~\",~\"PHP:7.4.12~\",~\"PHP:7.4.13~\",~\"PHP:7.4.14~\",~\"PHP:7.4.15~\",~\"PHP:7.4.16~\",~\"PHP:7.4.17~\",~\"PHP:7.4.18~\",~\"PHP:7.4.19~\",~\"PHP:7.4.20~\",~\"PHP:7.4.21~\",~\"PHP:7.4.22~\",~\"PHP:7.4.23~\",~\"PHP:7.4.24~\",~\"PHP:7.4.25~\",~\"PHP:7.4.26~\",~\"PHP:7.4.27~\",~\"PHP:7.4.28~\",~\"PHP:7.4.29~\",~\"PHP:7.4.30~\",~\"PHP:7.4.31~\",~\"PHP:7.4.32~\",~\"PHP:7.4.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.3.0~\",~\"PHP:7.3.1~\",~\"PHP:7.3.2~\",~\"PHP:7.3.3~\",~\"PHP:7.3.4~\",~\"PHP:7.3.5~\",~\"PHP:7.3.6~\",~\"PHP:7.3.7~\",~\"PHP:7.3.8~\",~\"PHP:7.3.9~\",~\"PHP:7.3.10~\",~\"PHP:7.3.11~\",~\"PHP:7.3.12~\",~\"PHP:7.3.13~\",~\"PHP:7.3.14~\",~\"PHP:7.3.15~\",~\"PHP:7.3.16~\",~\"PHP:7.3.17~\",~\"PHP:7.3.18~\",~\"PHP:7.3.19~\",~\"PHP:7.3.20~\",~\"PHP:7.3.21~\",~\"PHP:7.3.22~\",~\"PHP:7.3.23~\",~\"PHP:7.3.24~\",~\"PHP:7.3.25~\",~\"PHP:7.3.26~\",~\"PHP:7.3.27~\",~\"PHP:7.3.28~\",~\"PHP:7.3.29~\",~\"PHP:7.3.30~\",~\"PHP:7.3.31~\",~\"PHP:7.3.32~\",~\"PHP:7.3.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.2.0~\",~\"PHP:7.2.1~\",~\"PHP:7.2.2~\",~\"PHP:7.2.3~\",~\"PHP:7.2.4~\",~\"PHP:7.2.5~\",~\"PHP:7.2.6~\",~\"PHP:7.2.7~\",~\"PHP:7.2.8~\",~\"PHP:7.2.9~\",~\"PHP:7.2.10~\",~\"PHP:7.2.11~\",~\"PHP:7.2.12~\",~\"PHP:7.2.13~\",~\"PHP:7.2.14~\",~\"PHP:7.2.15~\",~\"PHP:7.2.16~\",~\"PHP:7.2.17~\",~\"PHP:7.2.18~\",~\"PHP:7.2.19~\",~\"PHP:7.2.20~\",~\"PHP:7.2.21~\",~\"PHP:7.2.22~\",~\"PHP:7.2.23~\",~\"PHP:7.2.24~\",~\"PHP:7.2.25~\",~\"PHP:7.2.26~\",~\"PHP:7.2.27~\",~\"PHP:7.2.28~\",~\"PHP:7.2.29~\",~\"PHP:7.2.30~\",~\"PHP:7.2.31~\",~\"PHP:7.2.32~\",~\"PHP:7.2.33~\",~\"PHP:7.2.34~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.1.0~\",~\"PHP:7.1.1~\",~\"PHP:7.1.2~\",~\"PHP:7.1.3~\",~\"PHP:7.1.4~\",~\"PHP:7.1.5~\",~\"PHP:7.1.6~\",~\"PHP:7.1.7~\",~\"PHP:7.1.8~\",~\"PHP:7.1.9~\",~\"PHP:7.1.10~\",~\"PHP:7.1.11~\",~\"PHP:7.1.12~\",~\"PHP:7.1.13~\",~\"PHP:7.1.14~\",~\"PHP:7.1.15~\",~\"PHP:7.1.16~\",~\"PHP:7.1.17~\",~\"PHP:7.1.18~\",~\"PHP:7.1.19~\",~\"PHP:7.1.20~\",~\"PHP:7.1.21~\",~\"PHP:7.1.22~\",~\"PHP:7.1.23~\",~\"PHP:7.1.24~\",~\"PHP:7.1.25~\",~\"PHP:7.1.26~\",~\"PHP:7.1.27~\",~\"PHP:7.1.28~\",~\"PHP:7.1.29~\",~\"PHP:7.1.30~\",~\"PHP:7.1.31~\",~\"PHP:7.1.32~\",~\"PHP:7.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.0.0~\",~\"PHP:7.0.1~\",~\"PHP:7.0.2~\",~\"PHP:7.0.3~\",~\"PHP:7.0.4~\",~\"PHP:7.0.5~\",~\"PHP:7.0.6~\",~\"PHP:7.0.7~\",~\"PHP:7.0.8~\",~\"PHP:7.0.9~\",~\"PHP:7.0.10~\",~\"PHP:7.0.11~\",~\"PHP:7.0.12~\",~\"PHP:7.0.13~\",~\"PHP:7.0.14~\",~\"PHP:7.0.15~\",~\"PHP:7.0.16~\",~\"PHP:7.0.17~\",~\"PHP:7.0.18~\",~\"PHP:7.0.19~\",~\"PHP:7.0.20~\",~\"PHP:7.0.21~\",~\"PHP:7.0.22~\",~\"PHP:7.0.23~\",~\"PHP:7.0.24~\",~\"PHP:7.0.25~\",~\"PHP:7.0.26~\",~\"PHP:7.0.27~\",~\"PHP:7.0.28~\",~\"PHP:7.0.29~\",~\"PHP:7.0.30~\",~\"PHP:7.0.31~\",~\"PHP:7.0.32~\",~\"PHP:7.0.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.6.0~\",~\"PHP:5.6.1~\",~\"PHP:5.6.2~\",~\"PHP:5.6.3~\",~\"PHP:5.6.4~\",~\"PHP:5.6.5~\",~\"PHP:5.6.6~\",~\"PHP:5.6.7~\",~\"PHP:5.6.8~\",~\"PHP:5.6.9~\",~\"PHP:5.6.10~\",~\"PHP:5.6.11~\",~\"PHP:5.6.12~\",~\"PHP:5.6.13~\",~\"PHP:5.6.14~\",~\"PHP:5.6.15~\",~\"PHP:5.6.16~\",~\"PHP:5.6.17~\",~\"PHP:5.6.18~\",~\"PHP:5.6.19~\",~\"PHP:5.6.20~\",~\"PHP:5.6.21~\",~\"PHP:5.6.22~\",~\"PHP:5.6.23~\",~\"PHP:5.6.24~\",~\"PHP:5.6.25~\",~\"PHP:5.6.26~\",~\"PHP:5.6.27~\",~\"PHP:5.6.28~\",~\"PHP:5.6.29~\",~\"PHP:5.6.30~\",~\"PHP:5.6.31~\",~\"PHP:5.6.32~\",~\"PHP:5.6.33~\",~\"PHP:5.6.34~\",~\"PHP:5.6.35~\",~\"PHP:5.6.36~\",~\"PHP:5.6.37~\",~\"PHP:5.6.38~\",~\"PHP:5.6.39~\",~\"PHP:5.6.40~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.5.0~\",~\"PHP:5.5.1~\",~\"PHP:5.5.2~\",~\"PHP:5.5.3~\",~\"PHP:5.5.4~\",~\"PHP:5.5.5~\",~\"PHP:5.5.6~\",~\"PHP:5.5.7~\",~\"PHP:5.5.8~\",~\"PHP:5.5.9~\",~\"PHP:5.5.10~\",~\"PHP:5.5.11~\",~\"PHP:5.5.12~\",~\"PHP:5.5.13~\",~\"PHP:5.5.14~\",~\"PHP:5.5.15~\",~\"PHP:5.5.16~\",~\"PHP:5.5.17~\",~\"PHP:5.5.18~\",~\"PHP:5.5.19~\",~\"PHP:5.5.20~\",~\"PHP:5.5.21~\",~\"PHP:5.5.22~\",~\"PHP:5.5.23~\",~\"PHP:5.5.24~\",~\"PHP:5.5.25~\",~\"PHP:5.5.26~\",~\"PHP:5.5.27~\",~\"PHP:5.5.28~\",~\"PHP:5.5.29~\",~\"PHP:5.5.30~\",~\"PHP:5.5.31~\",~\"PHP:5.5.32~\",~\"PHP:5.5.33~\",~\"PHP:5.5.34~\",~\"PHP:5.5.35~\",~\"PHP:5.5.36~\",~\"PHP:5.5.37~\",~\"PHP:5.5.38~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.4.0~\",~\"PHP:5.4.1~\",~\"PHP:5.4.2~\",~\"PHP:5.4.3~\",~\"PHP:5.4.4~\",~\"PHP:5.4.5~\",~\"PHP:5.4.6~\",~\"PHP:5.4.7~\",~\"PHP:5.4.8~\",~\"PHP:5.4.9~\",~\"PHP:5.4.10~\",~\"PHP:5.4.11~\",~\"PHP:5.4.12~\",~\"PHP:5.4.13~\",~\"PHP:5.4.14~\",~\"PHP:5.4.15~\",~\"PHP:5.4.16~\",~\"PHP:5.4.17~\",~\"PHP:5.4.18~\",~\"PHP:5.4.19~\",~\"PHP:5.4.20~\",~\"PHP:5.4.21~\",~\"PHP:5.4.22~\",~\"PHP:5.4.23~\",~\"PHP:5.4.24~\",~\"PHP:5.4.25~\",~\"PHP:5.4.26~\",~\"PHP:5.4.27~\",~\"PHP:5.4.28~\",~\"PHP:5.4.29~\",~\"PHP:5.4.30~\",~\"PHP:5.4.31~\",~\"PHP:5.4.32~\",~\"PHP:5.4.33~\",~\"PHP:5.4.34~\",~\"PHP:5.4.35~\",~\"PHP:5.4.36~\",~\"PHP:5.4.37~\",~\"PHP:5.4.38~\",~\"PHP:5.4.39~\",~\"PHP:5.4.40~\",~\"PHP:5.4.41~\",~\"PHP:5.4.42~\",~\"PHP:5.4.43~\",~\"PHP:5.4.44~\",~\"PHP:5.4.45~\")\")))):splitBy():count):limit(100):names",
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.4.0~\",~\"PHP:7.4.1~\",~\"PHP:7.4.2~\",~\"PHP:7.4.3~\",~\"PHP:7.4.4~\",~\"PHP:7.4.5~\",~\"PHP:7.4.6~\",~\"PHP:7.4.7~\",~\"PHP:7.4.8~\",~\"PHP:7.4.9~\",~\"PHP:7.4.10~\",~\"PHP:7.4.11~\",~\"PHP:7.4.12~\",~\"PHP:7.4.13~\",~\"PHP:7.4.14~\",~\"PHP:7.4.15~\",~\"PHP:7.4.16~\",~\"PHP:7.4.17~\",~\"PHP:7.4.18~\",~\"PHP:7.4.19~\",~\"PHP:7.4.20~\",~\"PHP:7.4.21~\",~\"PHP:7.4.22~\",~\"PHP:7.4.23~\",~\"PHP:7.4.24~\",~\"PHP:7.4.25~\",~\"PHP:7.4.26~\",~\"PHP:7.4.27~\",~\"PHP:7.4.28~\",~\"PHP:7.4.29~\",~\"PHP:7.4.30~\",~\"PHP:7.4.31~\",~\"PHP:7.4.32~\",~\"PHP:7.4.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.3.0~\",~\"PHP:7.3.1~\",~\"PHP:7.3.2~\",~\"PHP:7.3.3~\",~\"PHP:7.3.4~\",~\"PHP:7.3.5~\",~\"PHP:7.3.6~\",~\"PHP:7.3.7~\",~\"PHP:7.3.8~\",~\"PHP:7.3.9~\",~\"PHP:7.3.10~\",~\"PHP:7.3.11~\",~\"PHP:7.3.12~\",~\"PHP:7.3.13~\",~\"PHP:7.3.14~\",~\"PHP:7.3.15~\",~\"PHP:7.3.16~\",~\"PHP:7.3.17~\",~\"PHP:7.3.18~\",~\"PHP:7.3.19~\",~\"PHP:7.3.20~\",~\"PHP:7.3.21~\",~\"PHP:7.3.22~\",~\"PHP:7.3.23~\",~\"PHP:7.3.24~\",~\"PHP:7.3.25~\",~\"PHP:7.3.26~\",~\"PHP:7.3.27~\",~\"PHP:7.3.28~\",~\"PHP:7.3.29~\",~\"PHP:7.3.30~\",~\"PHP:7.3.31~\",~\"PHP:7.3.32~\",~\"PHP:7.3.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.2.0~\",~\"PHP:7.2.1~\",~\"PHP:7.2.2~\",~\"PHP:7.2.3~\",~\"PHP:7.2.4~\",~\"PHP:7.2.5~\",~\"PHP:7.2.6~\",~\"PHP:7.2.7~\",~\"PHP:7.2.8~\",~\"PHP:7.2.9~\",~\"PHP:7.2.10~\",~\"PHP:7.2.11~\",~\"PHP:7.2.12~\",~\"PHP:7.2.13~\",~\"PHP:7.2.14~\",~\"PHP:7.2.15~\",~\"PHP:7.2.16~\",~\"PHP:7.2.17~\",~\"PHP:7.2.18~\",~\"PHP:7.2.19~\",~\"PHP:7.2.20~\",~\"PHP:7.2.21~\",~\"PHP:7.2.22~\",~\"PHP:7.2.23~\",~\"PHP:7.2.24~\",~\"PHP:7.2.25~\",~\"PHP:7.2.26~\",~\"PHP:7.2.27~\",~\"PHP:7.2.28~\",~\"PHP:7.2.29~\",~\"PHP:7.2.30~\",~\"PHP:7.2.31~\",~\"PHP:7.2.32~\",~\"PHP:7.2.33~\",~\"PHP:7.2.34~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.1.0~\",~\"PHP:7.1.1~\",~\"PHP:7.1.2~\",~\"PHP:7.1.3~\",~\"PHP:7.1.4~\",~\"PHP:7.1.5~\",~\"PHP:7.1.6~\",~\"PHP:7.1.7~\",~\"PHP:7.1.8~\",~\"PHP:7.1.9~\",~\"PHP:7.1.10~\",~\"PHP:7.1.11~\",~\"PHP:7.1.12~\",~\"PHP:7.1.13~\",~\"PHP:7.1.14~\",~\"PHP:7.1.15~\",~\"PHP:7.1.16~\",~\"PHP:7.1.17~\",~\"PHP:7.1.18~\",~\"PHP:7.1.19~\",~\"PHP:7.1.20~\",~\"PHP:7.1.21~\",~\"PHP:7.1.22~\",~\"PHP:7.1.23~\",~\"PHP:7.1.24~\",~\"PHP:7.1.25~\",~\"PHP:7.1.26~\",~\"PHP:7.1.27~\",~\"PHP:7.1.28~\",~\"PHP:7.1.29~\",~\"PHP:7.1.30~\",~\"PHP:7.1.31~\",~\"PHP:7.1.32~\",~\"PHP:7.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.0.0~\",~\"PHP:7.0.1~\",~\"PHP:7.0.2~\",~\"PHP:7.0.3~\",~\"PHP:7.0.4~\",~\"PHP:7.0.5~\",~\"PHP:7.0.6~\",~\"PHP:7.0.7~\",~\"PHP:7.0.8~\",~\"PHP:7.0.9~\",~\"PHP:7.0.10~\",~\"PHP:7.0.11~\",~\"PHP:7.0.12~\",~\"PHP:7.0.13~\",~\"PHP:7.0.14~\",~\"PHP:7.0.15~\",~\"PHP:7.0.16~\",~\"PHP:7.0.17~\",~\"PHP:7.0.18~\",~\"PHP:7.0.19~\",~\"PHP:7.0.20~\",~\"PHP:7.0.21~\",~\"PHP:7.0.22~\",~\"PHP:7.0.23~\",~\"PHP:7.0.24~\",~\"PHP:7.0.25~\",~\"PHP:7.0.26~\",~\"PHP:7.0.27~\",~\"PHP:7.0.28~\",~\"PHP:7.0.29~\",~\"PHP:7.0.30~\",~\"PHP:7.0.31~\",~\"PHP:7.0.32~\",~\"PHP:7.0.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.6.0~\",~\"PHP:5.6.1~\",~\"PHP:5.6.2~\",~\"PHP:5.6.3~\",~\"PHP:5.6.4~\",~\"PHP:5.6.5~\",~\"PHP:5.6.6~\",~\"PHP:5.6.7~\",~\"PHP:5.6.8~\",~\"PHP:5.6.9~\",~\"PHP:5.6.10~\",~\"PHP:5.6.11~\",~\"PHP:5.6.12~\",~\"PHP:5.6.13~\",~\"PHP:5.6.14~\",~\"PHP:5.6.15~\",~\"PHP:5.6.16~\",~\"PHP:5.6.17~\",~\"PHP:5.6.18~\",~\"PHP:5.6.19~\",~\"PHP:5.6.20~\",~\"PHP:5.6.21~\",~\"PHP:5.6.22~\",~\"PHP:5.6.23~\",~\"PHP:5.6.24~\",~\"PHP:5.6.25~\",~\"PHP:5.6.26~\",~\"PHP:5.6.27~\",~\"PHP:5.6.28~\",~\"PHP:5.6.29~\",~\"PHP:5.6.30~\",~\"PHP:5.6.31~\",~\"PHP:5.6.32~\",~\"PHP:5.6.33~\",~\"PHP:5.6.34~\",~\"PHP:5.6.35~\",~\"PHP:5.6.36~\",~\"PHP:5.6.37~\",~\"PHP:5.6.38~\",~\"PHP:5.6.39~\",~\"PHP:5.6.40~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.5.0~\",~\"PHP:5.5.1~\",~\"PHP:5.5.2~\",~\"PHP:5.5.3~\",~\"PHP:5.5.4~\",~\"PHP:5.5.5~\",~\"PHP:5.5.6~\",~\"PHP:5.5.7~\",~\"PHP:5.5.8~\",~\"PHP:5.5.9~\",~\"PHP:5.5.10~\",~\"PHP:5.5.11~\",~\"PHP:5.5.12~\",~\"PHP:5.5.13~\",~\"PHP:5.5.14~\",~\"PHP:5.5.15~\",~\"PHP:5.5.16~\",~\"PHP:5.5.17~\",~\"PHP:5.5.18~\",~\"PHP:5.5.19~\",~\"PHP:5.5.20~\",~\"PHP:5.5.21~\",~\"PHP:5.5.22~\",~\"PHP:5.5.23~\",~\"PHP:5.5.24~\",~\"PHP:5.5.25~\",~\"PHP:5.5.26~\",~\"PHP:5.5.27~\",~\"PHP:5.5.28~\",~\"PHP:5.5.29~\",~\"PHP:5.5.30~\",~\"PHP:5.5.31~\",~\"PHP:5.5.32~\",~\"PHP:5.5.33~\",~\"PHP:5.5.34~\",~\"PHP:5.5.35~\",~\"PHP:5.5.36~\",~\"PHP:5.5.37~\",~\"PHP:5.5.38~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.4.0~\",~\"PHP:5.4.1~\",~\"PHP:5.4.2~\",~\"PHP:5.4.3~\",~\"PHP:5.4.4~\",~\"PHP:5.4.5~\",~\"PHP:5.4.6~\",~\"PHP:5.4.7~\",~\"PHP:5.4.8~\",~\"PHP:5.4.9~\",~\"PHP:5.4.10~\",~\"PHP:5.4.11~\",~\"PHP:5.4.12~\",~\"PHP:5.4.13~\",~\"PHP:5.4.14~\",~\"PHP:5.4.15~\",~\"PHP:5.4.16~\",~\"PHP:5.4.17~\",~\"PHP:5.4.18~\",~\"PHP:5.4.19~\",~\"PHP:5.4.20~\",~\"PHP:5.4.21~\",~\"PHP:5.4.22~\",~\"PHP:5.4.23~\",~\"PHP:5.4.24~\",~\"PHP:5.4.25~\",~\"PHP:5.4.26~\",~\"PHP:5.4.27~\",~\"PHP:5.4.28~\",~\"PHP:5.4.29~\",~\"PHP:5.4.30~\",~\"PHP:5.4.31~\",~\"PHP:5.4.32~\",~\"PHP:5.4.33~\",~\"PHP:5.4.34~\",~\"PHP:5.4.35~\",~\"PHP:5.4.36~\",~\"PHP:5.4.37~\",~\"PHP:5.4.38~\",~\"PHP:5.4.39~\",~\"PHP:5.4.40~\",~\"PHP:5.4.41~\",~\"PHP:5.4.42~\",~\"PHP:5.4.43~\",~\"PHP:5.4.44~\",~\"PHP:5.4.45~\")\")))):splitBy():count)"
+      ]
+    },
+    {
+      "name": "All PHP vs patched over time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 0,
+        "width": 1140,
+        "height": 152
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "All PHP vs patched over time",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        },
+        {
+          "id": "B",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.12~\",~\"PHP:8.5.13~\",~\"PHP:8.5.14~\",~\"PHP:8.5.15~\",~\"PHP:8.5.16~\",~\"PHP:8.5.17~\",~\"PHP:8.5.18~\",~\"PHP:8.5.19~\",~\"PHP:8.5.20~\",~\"PHP:8.5.21~\",~\"PHP:8.4.27~\",~\"PHP:8.4.28~\",~\"PHP:8.4.29~\",~\"PHP:8.4.30~\",~\"PHP:8.4.31~\",~\"PHP:8.4.32~\",~\"PHP:8.4.33~\",~\"PHP:8.4.34~\",~\"PHP:8.4.35~\",~\"PHP:8.4.36~\",~\"PHP:8.3.36~\",~\"PHP:8.3.37~\",~\"PHP:8.3.38~\",~\"PHP:8.3.39~\",~\"PHP:8.3.40~\",~\"PHP:8.3.41~\",~\"PHP:8.3.42~\",~\"PHP:8.3.43~\",~\"PHP:8.3.44~\",~\"PHP:8.3.45~\",~\"PHP:8.2.35~\",~\"PHP:8.2.36~\",~\"PHP:8.2.37~\",~\"PHP:8.2.38~\",~\"PHP:8.2.39~\",~\"PHP:8.2.40~\",~\"PHP:8.2.41~\",~\"PHP:8.2.42~\",~\"PHP:8.2.43~\",~\"PHP:8.2.44~\")\"))):splitBy():count",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "GRAPH_CHART",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "BLUE",
+              "seriesType": "LINE",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          },
+          {
+            "matcher": "B:",
+            "properties": {
+              "color": "GREEN",
+              "seriesType": "LINE",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=null&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):splitBy():count):limit(100):names,(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.12~\",~\"PHP:8.5.13~\",~\"PHP:8.5.14~\",~\"PHP:8.5.15~\",~\"PHP:8.5.16~\",~\"PHP:8.5.17~\",~\"PHP:8.5.18~\",~\"PHP:8.5.19~\",~\"PHP:8.5.20~\",~\"PHP:8.5.21~\",~\"PHP:8.4.27~\",~\"PHP:8.4.28~\",~\"PHP:8.4.29~\",~\"PHP:8.4.30~\",~\"PHP:8.4.31~\",~\"PHP:8.4.32~\",~\"PHP:8.4.33~\",~\"PHP:8.4.34~\",~\"PHP:8.4.35~\",~\"PHP:8.4.36~\",~\"PHP:8.3.36~\",~\"PHP:8.3.37~\",~\"PHP:8.3.38~\",~\"PHP:8.3.39~\",~\"PHP:8.3.40~\",~\"PHP:8.3.41~\",~\"PHP:8.3.42~\",~\"PHP:8.3.43~\",~\"PHP:8.3.44~\",~\"PHP:8.3.45~\",~\"PHP:8.2.35~\",~\"PHP:8.2.36~\",~\"PHP:8.2.37~\",~\"PHP:8.2.38~\",~\"PHP:8.2.39~\",~\"PHP:8.2.40~\",~\"PHP:8.2.41~\",~\"PHP:8.2.42~\",~\"PHP:8.2.43~\",~\"PHP:8.2.44~\")\"))):splitBy():count):limit(100):names"
+      ]
+    },
+    {
+      "name": "REMEDIATION  |  one row per process, click through to the process page",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 456,
+        "left": 0,
+        "width": 1520,
+        "height": 38
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false
+    },
+    {
+      "name": "Vulnerable, patch available: upgrade to 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 494,
+        "left": 0,
+        "width": 760,
+        "height": 342
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "Vulnerable, patch available: upgrade to 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.0~\",~\"PHP:8.5.1~\",~\"PHP:8.5.2~\",~\"PHP:8.5.3~\",~\"PHP:8.5.4~\",~\"PHP:8.5.5~\",~\"PHP:8.5.6~\",~\"PHP:8.5.7~\",~\"PHP:8.5.8~\",~\"PHP:8.5.9~\",~\"PHP:8.5.10~\",~\"PHP:8.5.11~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.4.0~\",~\"PHP:8.4.1~\",~\"PHP:8.4.2~\",~\"PHP:8.4.3~\",~\"PHP:8.4.4~\",~\"PHP:8.4.5~\",~\"PHP:8.4.6~\",~\"PHP:8.4.7~\",~\"PHP:8.4.8~\",~\"PHP:8.4.9~\",~\"PHP:8.4.10~\",~\"PHP:8.4.11~\",~\"PHP:8.4.12~\",~\"PHP:8.4.13~\",~\"PHP:8.4.14~\",~\"PHP:8.4.15~\",~\"PHP:8.4.16~\",~\"PHP:8.4.17~\",~\"PHP:8.4.18~\",~\"PHP:8.4.19~\",~\"PHP:8.4.20~\",~\"PHP:8.4.21~\",~\"PHP:8.4.22~\",~\"PHP:8.4.23~\",~\"PHP:8.4.24~\",~\"PHP:8.4.25~\",~\"PHP:8.4.26~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.3.0~\",~\"PHP:8.3.1~\",~\"PHP:8.3.2~\",~\"PHP:8.3.3~\",~\"PHP:8.3.4~\",~\"PHP:8.3.5~\",~\"PHP:8.3.6~\",~\"PHP:8.3.7~\",~\"PHP:8.3.8~\",~\"PHP:8.3.9~\",~\"PHP:8.3.10~\",~\"PHP:8.3.11~\",~\"PHP:8.3.12~\",~\"PHP:8.3.13~\",~\"PHP:8.3.14~\",~\"PHP:8.3.15~\",~\"PHP:8.3.16~\",~\"PHP:8.3.17~\",~\"PHP:8.3.18~\",~\"PHP:8.3.19~\",~\"PHP:8.3.20~\",~\"PHP:8.3.21~\",~\"PHP:8.3.22~\",~\"PHP:8.3.23~\",~\"PHP:8.3.24~\",~\"PHP:8.3.25~\",~\"PHP:8.3.26~\",~\"PHP:8.3.27~\",~\"PHP:8.3.28~\",~\"PHP:8.3.29~\",~\"PHP:8.3.30~\",~\"PHP:8.3.31~\",~\"PHP:8.3.32~\",~\"PHP:8.3.33~\",~\"PHP:8.3.34~\",~\"PHP:8.3.35~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.2.0~\",~\"PHP:8.2.1~\",~\"PHP:8.2.2~\",~\"PHP:8.2.3~\",~\"PHP:8.2.4~\",~\"PHP:8.2.5~\",~\"PHP:8.2.6~\",~\"PHP:8.2.7~\",~\"PHP:8.2.8~\",~\"PHP:8.2.9~\",~\"PHP:8.2.10~\",~\"PHP:8.2.11~\",~\"PHP:8.2.12~\",~\"PHP:8.2.13~\",~\"PHP:8.2.14~\",~\"PHP:8.2.15~\",~\"PHP:8.2.16~\",~\"PHP:8.2.17~\",~\"PHP:8.2.18~\",~\"PHP:8.2.19~\",~\"PHP:8.2.20~\",~\"PHP:8.2.21~\",~\"PHP:8.2.22~\",~\"PHP:8.2.23~\",~\"PHP:8.2.24~\",~\"PHP:8.2.25~\",~\"PHP:8.2.26~\",~\"PHP:8.2.27~\",~\"PHP:8.2.28~\",~\"PHP:8.2.29~\",~\"PHP:8.2.30~\",~\"PHP:8.2.31~\",~\"PHP:8.2.32~\",~\"PHP:8.2.33~\",~\"PHP:8.2.34~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "TABLE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "DEFAULT",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.5.0~\",~\"PHP:8.5.1~\",~\"PHP:8.5.2~\",~\"PHP:8.5.3~\",~\"PHP:8.5.4~\",~\"PHP:8.5.5~\",~\"PHP:8.5.6~\",~\"PHP:8.5.7~\",~\"PHP:8.5.8~\",~\"PHP:8.5.9~\",~\"PHP:8.5.10~\",~\"PHP:8.5.11~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.4.0~\",~\"PHP:8.4.1~\",~\"PHP:8.4.2~\",~\"PHP:8.4.3~\",~\"PHP:8.4.4~\",~\"PHP:8.4.5~\",~\"PHP:8.4.6~\",~\"PHP:8.4.7~\",~\"PHP:8.4.8~\",~\"PHP:8.4.9~\",~\"PHP:8.4.10~\",~\"PHP:8.4.11~\",~\"PHP:8.4.12~\",~\"PHP:8.4.13~\",~\"PHP:8.4.14~\",~\"PHP:8.4.15~\",~\"PHP:8.4.16~\",~\"PHP:8.4.17~\",~\"PHP:8.4.18~\",~\"PHP:8.4.19~\",~\"PHP:8.4.20~\",~\"PHP:8.4.21~\",~\"PHP:8.4.22~\",~\"PHP:8.4.23~\",~\"PHP:8.4.24~\",~\"PHP:8.4.25~\",~\"PHP:8.4.26~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.3.0~\",~\"PHP:8.3.1~\",~\"PHP:8.3.2~\",~\"PHP:8.3.3~\",~\"PHP:8.3.4~\",~\"PHP:8.3.5~\",~\"PHP:8.3.6~\",~\"PHP:8.3.7~\",~\"PHP:8.3.8~\",~\"PHP:8.3.9~\",~\"PHP:8.3.10~\",~\"PHP:8.3.11~\",~\"PHP:8.3.12~\",~\"PHP:8.3.13~\",~\"PHP:8.3.14~\",~\"PHP:8.3.15~\",~\"PHP:8.3.16~\",~\"PHP:8.3.17~\",~\"PHP:8.3.18~\",~\"PHP:8.3.19~\",~\"PHP:8.3.20~\",~\"PHP:8.3.21~\",~\"PHP:8.3.22~\",~\"PHP:8.3.23~\",~\"PHP:8.3.24~\",~\"PHP:8.3.25~\",~\"PHP:8.3.26~\",~\"PHP:8.3.27~\",~\"PHP:8.3.28~\",~\"PHP:8.3.29~\",~\"PHP:8.3.30~\",~\"PHP:8.3.31~\",~\"PHP:8.3.32~\",~\"PHP:8.3.33~\",~\"PHP:8.3.34~\",~\"PHP:8.3.35~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.2.0~\",~\"PHP:8.2.1~\",~\"PHP:8.2.2~\",~\"PHP:8.2.3~\",~\"PHP:8.2.4~\",~\"PHP:8.2.5~\",~\"PHP:8.2.6~\",~\"PHP:8.2.7~\",~\"PHP:8.2.8~\",~\"PHP:8.2.9~\",~\"PHP:8.2.10~\",~\"PHP:8.2.11~\",~\"PHP:8.2.12~\",~\"PHP:8.2.13~\",~\"PHP:8.2.14~\",~\"PHP:8.2.15~\",~\"PHP:8.2.16~\",~\"PHP:8.2.17~\",~\"PHP:8.2.18~\",~\"PHP:8.2.19~\",~\"PHP:8.2.20~\",~\"PHP:8.2.21~\",~\"PHP:8.2.22~\",~\"PHP:8.2.23~\",~\"PHP:8.2.24~\",~\"PHP:8.2.25~\",~\"PHP:8.2.26~\",~\"PHP:8.2.27~\",~\"PHP:8.2.28~\",~\"PHP:8.2.29~\",~\"PHP:8.2.30~\",~\"PHP:8.2.31~\",~\"PHP:8.2.32~\",~\"PHP:8.2.33~\",~\"PHP:8.2.34~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))):names:fold(auto)"
+      ]
+    },
+    {
+      "name": "EOL 8.0 / 8.1: apply community backport or migrate",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 494,
+        "left": 760,
+        "width": 760,
+        "height": 342
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "EOL 8.0 / 8.1: apply community backport or migrate",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.1.0~\",~\"PHP:8.1.1~\",~\"PHP:8.1.2~\",~\"PHP:8.1.3~\",~\"PHP:8.1.4~\",~\"PHP:8.1.5~\",~\"PHP:8.1.6~\",~\"PHP:8.1.7~\",~\"PHP:8.1.8~\",~\"PHP:8.1.9~\",~\"PHP:8.1.10~\",~\"PHP:8.1.11~\",~\"PHP:8.1.12~\",~\"PHP:8.1.13~\",~\"PHP:8.1.14~\",~\"PHP:8.1.15~\",~\"PHP:8.1.16~\",~\"PHP:8.1.17~\",~\"PHP:8.1.18~\",~\"PHP:8.1.19~\",~\"PHP:8.1.20~\",~\"PHP:8.1.21~\",~\"PHP:8.1.22~\",~\"PHP:8.1.23~\",~\"PHP:8.1.24~\",~\"PHP:8.1.25~\",~\"PHP:8.1.26~\",~\"PHP:8.1.27~\",~\"PHP:8.1.28~\",~\"PHP:8.1.29~\",~\"PHP:8.1.30~\",~\"PHP:8.1.31~\",~\"PHP:8.1.32~\",~\"PHP:8.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.0.0~\",~\"PHP:8.0.1~\",~\"PHP:8.0.2~\",~\"PHP:8.0.3~\",~\"PHP:8.0.4~\",~\"PHP:8.0.5~\",~\"PHP:8.0.6~\",~\"PHP:8.0.7~\",~\"PHP:8.0.8~\",~\"PHP:8.0.9~\",~\"PHP:8.0.10~\",~\"PHP:8.0.11~\",~\"PHP:8.0.12~\",~\"PHP:8.0.13~\",~\"PHP:8.0.14~\",~\"PHP:8.0.15~\",~\"PHP:8.0.16~\",~\"PHP:8.0.17~\",~\"PHP:8.0.18~\",~\"PHP:8.0.19~\",~\"PHP:8.0.20~\",~\"PHP:8.0.21~\",~\"PHP:8.0.22~\",~\"PHP:8.0.23~\",~\"PHP:8.0.24~\",~\"PHP:8.0.25~\",~\"PHP:8.0.26~\",~\"PHP:8.0.27~\",~\"PHP:8.0.28~\",~\"PHP:8.0.29~\",~\"PHP:8.0.30~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "TABLE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "DEFAULT",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.1.0~\",~\"PHP:8.1.1~\",~\"PHP:8.1.2~\",~\"PHP:8.1.3~\",~\"PHP:8.1.4~\",~\"PHP:8.1.5~\",~\"PHP:8.1.6~\",~\"PHP:8.1.7~\",~\"PHP:8.1.8~\",~\"PHP:8.1.9~\",~\"PHP:8.1.10~\",~\"PHP:8.1.11~\",~\"PHP:8.1.12~\",~\"PHP:8.1.13~\",~\"PHP:8.1.14~\",~\"PHP:8.1.15~\",~\"PHP:8.1.16~\",~\"PHP:8.1.17~\",~\"PHP:8.1.18~\",~\"PHP:8.1.19~\",~\"PHP:8.1.20~\",~\"PHP:8.1.21~\",~\"PHP:8.1.22~\",~\"PHP:8.1.23~\",~\"PHP:8.1.24~\",~\"PHP:8.1.25~\",~\"PHP:8.1.26~\",~\"PHP:8.1.27~\",~\"PHP:8.1.28~\",~\"PHP:8.1.29~\",~\"PHP:8.1.30~\",~\"PHP:8.1.31~\",~\"PHP:8.1.32~\",~\"PHP:8.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:8.0.0~\",~\"PHP:8.0.1~\",~\"PHP:8.0.2~\",~\"PHP:8.0.3~\",~\"PHP:8.0.4~\",~\"PHP:8.0.5~\",~\"PHP:8.0.6~\",~\"PHP:8.0.7~\",~\"PHP:8.0.8~\",~\"PHP:8.0.9~\",~\"PHP:8.0.10~\",~\"PHP:8.0.11~\",~\"PHP:8.0.12~\",~\"PHP:8.0.13~\",~\"PHP:8.0.14~\",~\"PHP:8.0.15~\",~\"PHP:8.0.16~\",~\"PHP:8.0.17~\",~\"PHP:8.0.18~\",~\"PHP:8.0.19~\",~\"PHP:8.0.20~\",~\"PHP:8.0.21~\",~\"PHP:8.0.22~\",~\"PHP:8.0.23~\",~\"PHP:8.0.24~\",~\"PHP:8.0.25~\",~\"PHP:8.0.26~\",~\"PHP:8.0.27~\",~\"PHP:8.0.28~\",~\"PHP:8.0.29~\",~\"PHP:8.0.30~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))):names:fold(auto)"
+      ]
+    },
+    {
+      "name": "EOL 7.x / 5.x: no fix, migrate or isolate",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 836,
+        "left": 0,
+        "width": 760,
+        "height": 342
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "EOL 7.x / 5.x: no fix, migrate or isolate",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.4.0~\",~\"PHP:7.4.1~\",~\"PHP:7.4.2~\",~\"PHP:7.4.3~\",~\"PHP:7.4.4~\",~\"PHP:7.4.5~\",~\"PHP:7.4.6~\",~\"PHP:7.4.7~\",~\"PHP:7.4.8~\",~\"PHP:7.4.9~\",~\"PHP:7.4.10~\",~\"PHP:7.4.11~\",~\"PHP:7.4.12~\",~\"PHP:7.4.13~\",~\"PHP:7.4.14~\",~\"PHP:7.4.15~\",~\"PHP:7.4.16~\",~\"PHP:7.4.17~\",~\"PHP:7.4.18~\",~\"PHP:7.4.19~\",~\"PHP:7.4.20~\",~\"PHP:7.4.21~\",~\"PHP:7.4.22~\",~\"PHP:7.4.23~\",~\"PHP:7.4.24~\",~\"PHP:7.4.25~\",~\"PHP:7.4.26~\",~\"PHP:7.4.27~\",~\"PHP:7.4.28~\",~\"PHP:7.4.29~\",~\"PHP:7.4.30~\",~\"PHP:7.4.31~\",~\"PHP:7.4.32~\",~\"PHP:7.4.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.3.0~\",~\"PHP:7.3.1~\",~\"PHP:7.3.2~\",~\"PHP:7.3.3~\",~\"PHP:7.3.4~\",~\"PHP:7.3.5~\",~\"PHP:7.3.6~\",~\"PHP:7.3.7~\",~\"PHP:7.3.8~\",~\"PHP:7.3.9~\",~\"PHP:7.3.10~\",~\"PHP:7.3.11~\",~\"PHP:7.3.12~\",~\"PHP:7.3.13~\",~\"PHP:7.3.14~\",~\"PHP:7.3.15~\",~\"PHP:7.3.16~\",~\"PHP:7.3.17~\",~\"PHP:7.3.18~\",~\"PHP:7.3.19~\",~\"PHP:7.3.20~\",~\"PHP:7.3.21~\",~\"PHP:7.3.22~\",~\"PHP:7.3.23~\",~\"PHP:7.3.24~\",~\"PHP:7.3.25~\",~\"PHP:7.3.26~\",~\"PHP:7.3.27~\",~\"PHP:7.3.28~\",~\"PHP:7.3.29~\",~\"PHP:7.3.30~\",~\"PHP:7.3.31~\",~\"PHP:7.3.32~\",~\"PHP:7.3.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.2.0~\",~\"PHP:7.2.1~\",~\"PHP:7.2.2~\",~\"PHP:7.2.3~\",~\"PHP:7.2.4~\",~\"PHP:7.2.5~\",~\"PHP:7.2.6~\",~\"PHP:7.2.7~\",~\"PHP:7.2.8~\",~\"PHP:7.2.9~\",~\"PHP:7.2.10~\",~\"PHP:7.2.11~\",~\"PHP:7.2.12~\",~\"PHP:7.2.13~\",~\"PHP:7.2.14~\",~\"PHP:7.2.15~\",~\"PHP:7.2.16~\",~\"PHP:7.2.17~\",~\"PHP:7.2.18~\",~\"PHP:7.2.19~\",~\"PHP:7.2.20~\",~\"PHP:7.2.21~\",~\"PHP:7.2.22~\",~\"PHP:7.2.23~\",~\"PHP:7.2.24~\",~\"PHP:7.2.25~\",~\"PHP:7.2.26~\",~\"PHP:7.2.27~\",~\"PHP:7.2.28~\",~\"PHP:7.2.29~\",~\"PHP:7.2.30~\",~\"PHP:7.2.31~\",~\"PHP:7.2.32~\",~\"PHP:7.2.33~\",~\"PHP:7.2.34~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.1.0~\",~\"PHP:7.1.1~\",~\"PHP:7.1.2~\",~\"PHP:7.1.3~\",~\"PHP:7.1.4~\",~\"PHP:7.1.5~\",~\"PHP:7.1.6~\",~\"PHP:7.1.7~\",~\"PHP:7.1.8~\",~\"PHP:7.1.9~\",~\"PHP:7.1.10~\",~\"PHP:7.1.11~\",~\"PHP:7.1.12~\",~\"PHP:7.1.13~\",~\"PHP:7.1.14~\",~\"PHP:7.1.15~\",~\"PHP:7.1.16~\",~\"PHP:7.1.17~\",~\"PHP:7.1.18~\",~\"PHP:7.1.19~\",~\"PHP:7.1.20~\",~\"PHP:7.1.21~\",~\"PHP:7.1.22~\",~\"PHP:7.1.23~\",~\"PHP:7.1.24~\",~\"PHP:7.1.25~\",~\"PHP:7.1.26~\",~\"PHP:7.1.27~\",~\"PHP:7.1.28~\",~\"PHP:7.1.29~\",~\"PHP:7.1.30~\",~\"PHP:7.1.31~\",~\"PHP:7.1.32~\",~\"PHP:7.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.0.0~\",~\"PHP:7.0.1~\",~\"PHP:7.0.2~\",~\"PHP:7.0.3~\",~\"PHP:7.0.4~\",~\"PHP:7.0.5~\",~\"PHP:7.0.6~\",~\"PHP:7.0.7~\",~\"PHP:7.0.8~\",~\"PHP:7.0.9~\",~\"PHP:7.0.10~\",~\"PHP:7.0.11~\",~\"PHP:7.0.12~\",~\"PHP:7.0.13~\",~\"PHP:7.0.14~\",~\"PHP:7.0.15~\",~\"PHP:7.0.16~\",~\"PHP:7.0.17~\",~\"PHP:7.0.18~\",~\"PHP:7.0.19~\",~\"PHP:7.0.20~\",~\"PHP:7.0.21~\",~\"PHP:7.0.22~\",~\"PHP:7.0.23~\",~\"PHP:7.0.24~\",~\"PHP:7.0.25~\",~\"PHP:7.0.26~\",~\"PHP:7.0.27~\",~\"PHP:7.0.28~\",~\"PHP:7.0.29~\",~\"PHP:7.0.30~\",~\"PHP:7.0.31~\",~\"PHP:7.0.32~\",~\"PHP:7.0.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.6.0~\",~\"PHP:5.6.1~\",~\"PHP:5.6.2~\",~\"PHP:5.6.3~\",~\"PHP:5.6.4~\",~\"PHP:5.6.5~\",~\"PHP:5.6.6~\",~\"PHP:5.6.7~\",~\"PHP:5.6.8~\",~\"PHP:5.6.9~\",~\"PHP:5.6.10~\",~\"PHP:5.6.11~\",~\"PHP:5.6.12~\",~\"PHP:5.6.13~\",~\"PHP:5.6.14~\",~\"PHP:5.6.15~\",~\"PHP:5.6.16~\",~\"PHP:5.6.17~\",~\"PHP:5.6.18~\",~\"PHP:5.6.19~\",~\"PHP:5.6.20~\",~\"PHP:5.6.21~\",~\"PHP:5.6.22~\",~\"PHP:5.6.23~\",~\"PHP:5.6.24~\",~\"PHP:5.6.25~\",~\"PHP:5.6.26~\",~\"PHP:5.6.27~\",~\"PHP:5.6.28~\",~\"PHP:5.6.29~\",~\"PHP:5.6.30~\",~\"PHP:5.6.31~\",~\"PHP:5.6.32~\",~\"PHP:5.6.33~\",~\"PHP:5.6.34~\",~\"PHP:5.6.35~\",~\"PHP:5.6.36~\",~\"PHP:5.6.37~\",~\"PHP:5.6.38~\",~\"PHP:5.6.39~\",~\"PHP:5.6.40~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.5.0~\",~\"PHP:5.5.1~\",~\"PHP:5.5.2~\",~\"PHP:5.5.3~\",~\"PHP:5.5.4~\",~\"PHP:5.5.5~\",~\"PHP:5.5.6~\",~\"PHP:5.5.7~\",~\"PHP:5.5.8~\",~\"PHP:5.5.9~\",~\"PHP:5.5.10~\",~\"PHP:5.5.11~\",~\"PHP:5.5.12~\",~\"PHP:5.5.13~\",~\"PHP:5.5.14~\",~\"PHP:5.5.15~\",~\"PHP:5.5.16~\",~\"PHP:5.5.17~\",~\"PHP:5.5.18~\",~\"PHP:5.5.19~\",~\"PHP:5.5.20~\",~\"PHP:5.5.21~\",~\"PHP:5.5.22~\",~\"PHP:5.5.23~\",~\"PHP:5.5.24~\",~\"PHP:5.5.25~\",~\"PHP:5.5.26~\",~\"PHP:5.5.27~\",~\"PHP:5.5.28~\",~\"PHP:5.5.29~\",~\"PHP:5.5.30~\",~\"PHP:5.5.31~\",~\"PHP:5.5.32~\",~\"PHP:5.5.33~\",~\"PHP:5.5.34~\",~\"PHP:5.5.35~\",~\"PHP:5.5.36~\",~\"PHP:5.5.37~\",~\"PHP:5.5.38~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.4.0~\",~\"PHP:5.4.1~\",~\"PHP:5.4.2~\",~\"PHP:5.4.3~\",~\"PHP:5.4.4~\",~\"PHP:5.4.5~\",~\"PHP:5.4.6~\",~\"PHP:5.4.7~\",~\"PHP:5.4.8~\",~\"PHP:5.4.9~\",~\"PHP:5.4.10~\",~\"PHP:5.4.11~\",~\"PHP:5.4.12~\",~\"PHP:5.4.13~\",~\"PHP:5.4.14~\",~\"PHP:5.4.15~\",~\"PHP:5.4.16~\",~\"PHP:5.4.17~\",~\"PHP:5.4.18~\",~\"PHP:5.4.19~\",~\"PHP:5.4.20~\",~\"PHP:5.4.21~\",~\"PHP:5.4.22~\",~\"PHP:5.4.23~\",~\"PHP:5.4.24~\",~\"PHP:5.4.25~\",~\"PHP:5.4.26~\",~\"PHP:5.4.27~\",~\"PHP:5.4.28~\",~\"PHP:5.4.29~\",~\"PHP:5.4.30~\",~\"PHP:5.4.31~\",~\"PHP:5.4.32~\",~\"PHP:5.4.33~\",~\"PHP:5.4.34~\",~\"PHP:5.4.35~\",~\"PHP:5.4.36~\",~\"PHP:5.4.37~\",~\"PHP:5.4.38~\",~\"PHP:5.4.39~\",~\"PHP:5.4.40~\",~\"PHP:5.4.41~\",~\"PHP:5.4.42~\",~\"PHP:5.4.43~\",~\"PHP:5.4.44~\",~\"PHP:5.4.45~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "TABLE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "DEFAULT",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=null&(builtin:pgi.availability.state:filter(or(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.4.0~\",~\"PHP:7.4.1~\",~\"PHP:7.4.2~\",~\"PHP:7.4.3~\",~\"PHP:7.4.4~\",~\"PHP:7.4.5~\",~\"PHP:7.4.6~\",~\"PHP:7.4.7~\",~\"PHP:7.4.8~\",~\"PHP:7.4.9~\",~\"PHP:7.4.10~\",~\"PHP:7.4.11~\",~\"PHP:7.4.12~\",~\"PHP:7.4.13~\",~\"PHP:7.4.14~\",~\"PHP:7.4.15~\",~\"PHP:7.4.16~\",~\"PHP:7.4.17~\",~\"PHP:7.4.18~\",~\"PHP:7.4.19~\",~\"PHP:7.4.20~\",~\"PHP:7.4.21~\",~\"PHP:7.4.22~\",~\"PHP:7.4.23~\",~\"PHP:7.4.24~\",~\"PHP:7.4.25~\",~\"PHP:7.4.26~\",~\"PHP:7.4.27~\",~\"PHP:7.4.28~\",~\"PHP:7.4.29~\",~\"PHP:7.4.30~\",~\"PHP:7.4.31~\",~\"PHP:7.4.32~\",~\"PHP:7.4.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.3.0~\",~\"PHP:7.3.1~\",~\"PHP:7.3.2~\",~\"PHP:7.3.3~\",~\"PHP:7.3.4~\",~\"PHP:7.3.5~\",~\"PHP:7.3.6~\",~\"PHP:7.3.7~\",~\"PHP:7.3.8~\",~\"PHP:7.3.9~\",~\"PHP:7.3.10~\",~\"PHP:7.3.11~\",~\"PHP:7.3.12~\",~\"PHP:7.3.13~\",~\"PHP:7.3.14~\",~\"PHP:7.3.15~\",~\"PHP:7.3.16~\",~\"PHP:7.3.17~\",~\"PHP:7.3.18~\",~\"PHP:7.3.19~\",~\"PHP:7.3.20~\",~\"PHP:7.3.21~\",~\"PHP:7.3.22~\",~\"PHP:7.3.23~\",~\"PHP:7.3.24~\",~\"PHP:7.3.25~\",~\"PHP:7.3.26~\",~\"PHP:7.3.27~\",~\"PHP:7.3.28~\",~\"PHP:7.3.29~\",~\"PHP:7.3.30~\",~\"PHP:7.3.31~\",~\"PHP:7.3.32~\",~\"PHP:7.3.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.2.0~\",~\"PHP:7.2.1~\",~\"PHP:7.2.2~\",~\"PHP:7.2.3~\",~\"PHP:7.2.4~\",~\"PHP:7.2.5~\",~\"PHP:7.2.6~\",~\"PHP:7.2.7~\",~\"PHP:7.2.8~\",~\"PHP:7.2.9~\",~\"PHP:7.2.10~\",~\"PHP:7.2.11~\",~\"PHP:7.2.12~\",~\"PHP:7.2.13~\",~\"PHP:7.2.14~\",~\"PHP:7.2.15~\",~\"PHP:7.2.16~\",~\"PHP:7.2.17~\",~\"PHP:7.2.18~\",~\"PHP:7.2.19~\",~\"PHP:7.2.20~\",~\"PHP:7.2.21~\",~\"PHP:7.2.22~\",~\"PHP:7.2.23~\",~\"PHP:7.2.24~\",~\"PHP:7.2.25~\",~\"PHP:7.2.26~\",~\"PHP:7.2.27~\",~\"PHP:7.2.28~\",~\"PHP:7.2.29~\",~\"PHP:7.2.30~\",~\"PHP:7.2.31~\",~\"PHP:7.2.32~\",~\"PHP:7.2.33~\",~\"PHP:7.2.34~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.1.0~\",~\"PHP:7.1.1~\",~\"PHP:7.1.2~\",~\"PHP:7.1.3~\",~\"PHP:7.1.4~\",~\"PHP:7.1.5~\",~\"PHP:7.1.6~\",~\"PHP:7.1.7~\",~\"PHP:7.1.8~\",~\"PHP:7.1.9~\",~\"PHP:7.1.10~\",~\"PHP:7.1.11~\",~\"PHP:7.1.12~\",~\"PHP:7.1.13~\",~\"PHP:7.1.14~\",~\"PHP:7.1.15~\",~\"PHP:7.1.16~\",~\"PHP:7.1.17~\",~\"PHP:7.1.18~\",~\"PHP:7.1.19~\",~\"PHP:7.1.20~\",~\"PHP:7.1.21~\",~\"PHP:7.1.22~\",~\"PHP:7.1.23~\",~\"PHP:7.1.24~\",~\"PHP:7.1.25~\",~\"PHP:7.1.26~\",~\"PHP:7.1.27~\",~\"PHP:7.1.28~\",~\"PHP:7.1.29~\",~\"PHP:7.1.30~\",~\"PHP:7.1.31~\",~\"PHP:7.1.32~\",~\"PHP:7.1.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:7.0.0~\",~\"PHP:7.0.1~\",~\"PHP:7.0.2~\",~\"PHP:7.0.3~\",~\"PHP:7.0.4~\",~\"PHP:7.0.5~\",~\"PHP:7.0.6~\",~\"PHP:7.0.7~\",~\"PHP:7.0.8~\",~\"PHP:7.0.9~\",~\"PHP:7.0.10~\",~\"PHP:7.0.11~\",~\"PHP:7.0.12~\",~\"PHP:7.0.13~\",~\"PHP:7.0.14~\",~\"PHP:7.0.15~\",~\"PHP:7.0.16~\",~\"PHP:7.0.17~\",~\"PHP:7.0.18~\",~\"PHP:7.0.19~\",~\"PHP:7.0.20~\",~\"PHP:7.0.21~\",~\"PHP:7.0.22~\",~\"PHP:7.0.23~\",~\"PHP:7.0.24~\",~\"PHP:7.0.25~\",~\"PHP:7.0.26~\",~\"PHP:7.0.27~\",~\"PHP:7.0.28~\",~\"PHP:7.0.29~\",~\"PHP:7.0.30~\",~\"PHP:7.0.31~\",~\"PHP:7.0.32~\",~\"PHP:7.0.33~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.6.0~\",~\"PHP:5.6.1~\",~\"PHP:5.6.2~\",~\"PHP:5.6.3~\",~\"PHP:5.6.4~\",~\"PHP:5.6.5~\",~\"PHP:5.6.6~\",~\"PHP:5.6.7~\",~\"PHP:5.6.8~\",~\"PHP:5.6.9~\",~\"PHP:5.6.10~\",~\"PHP:5.6.11~\",~\"PHP:5.6.12~\",~\"PHP:5.6.13~\",~\"PHP:5.6.14~\",~\"PHP:5.6.15~\",~\"PHP:5.6.16~\",~\"PHP:5.6.17~\",~\"PHP:5.6.18~\",~\"PHP:5.6.19~\",~\"PHP:5.6.20~\",~\"PHP:5.6.21~\",~\"PHP:5.6.22~\",~\"PHP:5.6.23~\",~\"PHP:5.6.24~\",~\"PHP:5.6.25~\",~\"PHP:5.6.26~\",~\"PHP:5.6.27~\",~\"PHP:5.6.28~\",~\"PHP:5.6.29~\",~\"PHP:5.6.30~\",~\"PHP:5.6.31~\",~\"PHP:5.6.32~\",~\"PHP:5.6.33~\",~\"PHP:5.6.34~\",~\"PHP:5.6.35~\",~\"PHP:5.6.36~\",~\"PHP:5.6.37~\",~\"PHP:5.6.38~\",~\"PHP:5.6.39~\",~\"PHP:5.6.40~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.5.0~\",~\"PHP:5.5.1~\",~\"PHP:5.5.2~\",~\"PHP:5.5.3~\",~\"PHP:5.5.4~\",~\"PHP:5.5.5~\",~\"PHP:5.5.6~\",~\"PHP:5.5.7~\",~\"PHP:5.5.8~\",~\"PHP:5.5.9~\",~\"PHP:5.5.10~\",~\"PHP:5.5.11~\",~\"PHP:5.5.12~\",~\"PHP:5.5.13~\",~\"PHP:5.5.14~\",~\"PHP:5.5.15~\",~\"PHP:5.5.16~\",~\"PHP:5.5.17~\",~\"PHP:5.5.18~\",~\"PHP:5.5.19~\",~\"PHP:5.5.20~\",~\"PHP:5.5.21~\",~\"PHP:5.5.22~\",~\"PHP:5.5.23~\",~\"PHP:5.5.24~\",~\"PHP:5.5.25~\",~\"PHP:5.5.26~\",~\"PHP:5.5.27~\",~\"PHP:5.5.28~\",~\"PHP:5.5.29~\",~\"PHP:5.5.30~\",~\"PHP:5.5.31~\",~\"PHP:5.5.32~\",~\"PHP:5.5.33~\",~\"PHP:5.5.34~\",~\"PHP:5.5.35~\",~\"PHP:5.5.36~\",~\"PHP:5.5.37~\",~\"PHP:5.5.38~\")\")),in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies.version(~\"PHP:5.4.0~\",~\"PHP:5.4.1~\",~\"PHP:5.4.2~\",~\"PHP:5.4.3~\",~\"PHP:5.4.4~\",~\"PHP:5.4.5~\",~\"PHP:5.4.6~\",~\"PHP:5.4.7~\",~\"PHP:5.4.8~\",~\"PHP:5.4.9~\",~\"PHP:5.4.10~\",~\"PHP:5.4.11~\",~\"PHP:5.4.12~\",~\"PHP:5.4.13~\",~\"PHP:5.4.14~\",~\"PHP:5.4.15~\",~\"PHP:5.4.16~\",~\"PHP:5.4.17~\",~\"PHP:5.4.18~\",~\"PHP:5.4.19~\",~\"PHP:5.4.20~\",~\"PHP:5.4.21~\",~\"PHP:5.4.22~\",~\"PHP:5.4.23~\",~\"PHP:5.4.24~\",~\"PHP:5.4.25~\",~\"PHP:5.4.26~\",~\"PHP:5.4.27~\",~\"PHP:5.4.28~\",~\"PHP:5.4.29~\",~\"PHP:5.4.30~\",~\"PHP:5.4.31~\",~\"PHP:5.4.32~\",~\"PHP:5.4.33~\",~\"PHP:5.4.34~\",~\"PHP:5.4.35~\",~\"PHP:5.4.36~\",~\"PHP:5.4.37~\",~\"PHP:5.4.38~\",~\"PHP:5.4.39~\",~\"PHP:5.4.40~\",~\"PHP:5.4.41~\",~\"PHP:5.4.42~\",~\"PHP:5.4.43~\",~\"PHP:5.4.44~\",~\"PHP:5.4.45~\")\")))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))):names:fold(auto)"
+      ]
+    },
+    {
+      "name": "All PHP processes (reference)",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 836,
+        "left": 760,
+        "width": 760,
+        "height": 342
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "customName": "All PHP processes (reference)",
+      "queries": [
+        {
+          "id": "A",
+          "spaceAggregation": "AUTO",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))",
+          "rate": "NONE",
+          "enabled": true,
+          "histogram": false
+        }
+      ],
+      "visualConfig": {
+        "type": "TABLE",
+        "global": {},
+        "rules": [
+          {
+            "matcher": "A:",
+            "properties": {
+              "color": "DEFAULT",
+              "alias": "Process State"
+            },
+            "seriesOverrides": []
+          }
+        ],
+        "axes": {
+          "xAxis": {
+            "visible": true
+          },
+          "yAxes": []
+        },
+        "heatmapSettings": {
+          "yAxis": "VALUE"
+        },
+        "thresholds": [],
+        "tableSettings": {
+          "isThresholdBackgroundAppliedToCell": false,
+          "hiddenColumns": []
+        },
+        "graphChartSettings": {
+          "connectNulls": false
+        },
+        "honeycombSettings": {
+          "showHive": true,
+          "showLegend": true,
+          "showLabels": false
+        }
+      },
+      "queriesSettings": {
+        "resolution": ""
+      },
+      "metricExpressions": [
+        "resolution=null&(builtin:pgi.availability.state:filter(in(\"dt.entity.process_group_instance\",entitySelector(\"type(process_group_instance),softwareTechnologies(PHP)\"))):last:splitBy(\"dt.entity.process_group_instance\",\"dt.entity.host\",\"dt.host_group.id\"):sort(value(auto,descending))):names:fold(auto)"
+      ]
+    },
+    {
+      "name": "WHAT THIS DASHBOARD CANNOT SEE",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 1178,
+        "left": 0,
+        "width": 1520,
+        "height": 38
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false
+    },
+    {
+      "name": "Gaps",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 1216,
+        "left": 0,
+        "width": 1520,
+        "height": 114
+      },
+      "tileFilter": {},
+      "isAutoRefreshDisabled": false,
+      "markdown": "PHP on hosts without OneAgent (agency-hosted WordPress/Drupal, appliances, ops-tooling boxes). `php-cgi.exe` under IIS that OneAgent did not fingerprint as PHP: check the IIS technology tile and ask the Windows team for `Get-WebHandler` output. IIS sites with a `*.php` handler mapped but idle. Runtime Application Protection does not block this class of bug; Runtime Vulnerability Analytics covers libraries, not the PHP runtime, so this inventory is the source of truth. Exploitation hunting (PHP workers spawning shells) needs exec telemetry such as CrowdStrike Falcon, Falco, Tetragon, auditd, or Sysmon; see the companion notebook."
+    }
+  ]
+}
